@@ -36,6 +36,7 @@ Do {
 Write-Host "Registering/re-registering the Microsoft.ContainerService provider" -ForegroundColor Yellow
 az provider register --namespace Microsoft.ContainerService
 
+Write-Host "Enabling service mesh..." -ForegroundColor Yellow
 az aks mesh enable --resource-group ${RESOURCE_GROUP} --name ${CLUSTER}
 
 # Retrieve AKS admin credentials
