@@ -42,3 +42,10 @@ az aks mesh enable --resource-group ${RESOURCE_GROUP} --name ${CLUSTER}
 # Retrieve AKS admin credentials
 Write-Host "Retrieving AKS credentials" -ForegroundColor Yellow
 az aks get-credentials --name $clusterName --resource-group $resourceGroup --overwrite-existing
+
+# Label the default namespace, if that's where pods will be deployed
+kubectl label namespace default istio.io/rev=asm-1-17
+
+# Run up a sample app in the default namespace
+kubectl run nginx --image=nginx
+kubectl get pods
