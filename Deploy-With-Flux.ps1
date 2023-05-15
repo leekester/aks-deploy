@@ -52,13 +52,29 @@ If ($installFlux) {
 Write-Host "Retrieving AKS credentials" -ForegroundColor Yellow
 az aks get-credentials --name $clusterName --resource-group $resourceGroup --overwrite-existing
 
-# Label the default namespace, if that's where pods will be deployed
-kubectl label namespace default istio.io/rev=asm-1-17
-
-az k8s-configuration flux create -g $resourceGroup -c $clusterName `
-  -n cluster-config --namespace cluster-config -t managedClusters `
-  --scope namespace `
-  -u https://github.com/gbaeke/gitops-flux2-quick-guide `
+# Create Flux configurations and Kustomizations
+az k8s-configuration flux create `
+  --cluster-name $clusterName `
+  --resource-group $resourceGroup `
+  --name cluster-config `
+  --namespace cluster-config `
+  --cluster-type managedClusters `
+  --scope cluster `
+  --url https://github.com/leekester/billing `
   --branch main `
-  --kustomization name=infra path=./infrastructure prune=true `
-  --kustomization name=apps path=./apps/staging prune=true dependsOn=["infra"]
+  --sync-interval 0h1m0s `
+  --timeout 0h1m0s `
+  --kustomization name=cluster-kustomization path=cluster prune=true sync_interval=0h1m0s timeout=0h1m0s
+
+az k8s-configuration flux create `
+  --cluster-name $clusterName `
+  --resource-group $resourceGroup `
+  --name app-config `
+  --namespace application-ns `
+  --cluster-type managedClusters `
+  --scope namespace `
+  --url https://github.com/leekester/billing `
+  --branch main `
+  --sync-interval 0h1m0s `
+  --timeout 0h1m0s `
+  --kustomization name=app-kustomization path=application prune=true sync_interval=0h1m0s timeout=0h1m0s
