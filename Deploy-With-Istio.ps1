@@ -19,7 +19,10 @@ az aks create `
   --network-plugin kubenet `
   --pod-cidr 192.168.0.0/16 `
   --zones 1 `
-  --generate-ssh-keys
+  --generate-ssh-keys `
+  --enable-aad `
+  --enable-azure-rbac `
+  --disable-local-accounts
 
 # Register the service mesh feature and wait until registration completes
 $startTime = (Get-Date)
