@@ -53,6 +53,7 @@ Write-Host "Retrieving AKS credentials" -ForegroundColor Yellow
 az aks get-credentials --name $clusterName --resource-group $resourceGroup --overwrite-existing
 
 # Create Flux configurations and Kustomizations
+# Example cluster configuration
 az k8s-configuration flux create `
   --cluster-name $clusterName `
   --resource-group $resourceGroup `
@@ -66,6 +67,7 @@ az k8s-configuration flux create `
   --timeout 0h1m0s `
   --kustomization name=cluster-kustomization path=cluster prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 
+# Example application configuration
 az k8s-configuration flux create `
   --cluster-name $clusterName `
   --resource-group $resourceGroup `
