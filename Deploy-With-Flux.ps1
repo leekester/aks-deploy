@@ -64,7 +64,7 @@ az k8s-configuration flux create `
   --branch main `
   --sync-interval 0h1m0s `
   --timeout 0h1m0s `
-  --kustomization name=cluster-kustomization path=cluster prune=true sync_interval=0h1m0s timeout=0h1m0s
+  --kustomization name=cluster-kustomization path=cluster prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 
 az k8s-configuration flux create `
   --cluster-name $clusterName `
@@ -77,4 +77,4 @@ az k8s-configuration flux create `
   --branch main `
   --sync-interval 0h1m0s `
   --timeout 0h1m0s `
-  --kustomization name=app-kustomization path=application prune=true sync_interval=0h1m0s timeout=0h1m0s
+  --kustomization name=app-kustomization path=application prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
