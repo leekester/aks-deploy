@@ -70,7 +70,7 @@ az k8s-configuration flux create `
   --cluster-name $clusterName `
   --resource-group $resourceGroup `
   --name app-config `
-  --namespace application-ns `
+  --namespace application `
   --cluster-type managedClusters `
   --scope namespace `
   --url https://github.com/leekester/billing `
