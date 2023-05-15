@@ -3,6 +3,7 @@ $location = "uksouth"
 $clusterName = "aks"
 $nodesize = "Standard_B4ms"
 $nodeCount = "1"
+$installFlux = $true
 $subscriptionId = (az account show --query id --output tsv)
 
 # Create AKS cluster
@@ -38,6 +39,11 @@ az provider register --namespace Microsoft.ContainerService
 
 Write-Host "Enabling service mesh..." -ForegroundColor Yellow
 az aks mesh enable --resource-group $resourceGroup --name $clusterName
+
+If ($installFlux) {
+    Write-Host "Enabling Flux extension..." -ForegroundColor Yellow
+    az k8s-extension create --resource-group $resourceGroup --cluster-name $clusterName --cluster-type managedClusters --name flux --extension-type microsoft.flux --config useKubeletIdentity=true
+}
 
 # Retrieve AKS admin credentials
 Write-Host "Retrieving AKS credentials" -ForegroundColor Yellow
