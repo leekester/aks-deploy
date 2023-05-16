@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: policy
+  namespace: policy-ns
+spec:
+  containers:
+#  - image: acrdevakshislmgtuksouth001abfimd.azurecr.io/testimages/nginx:latest
+  - image: memcached
+    name: policy
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "128Mi"
+        cpu: "200m"

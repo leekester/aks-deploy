@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: billing-ns
+  labels:
+    name: billing-ns
+    istio.io/rev: asm-1-17
+    costcentre: billing
+    costowner: bob_maildomain.com
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: billing-quota
+  namespace: billing-ns
+spec:
+  hard:
+    requests.cpu: 1000m
+    requests.memory: 2Gi
+    limits.cpu: 3000m
+    limits.memory: 4Gi
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: policy-ns
+  labels:
+    name: policy-ns
+    istio.io/rev: asm-1-17
+    costcentre: policy
+    costowner: jane_maildomain.com
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: policy-quota
+  namespace: policy-ns
+spec:
+  hard:
+    requests.cpu: 1000m
+    requests.memory: 2Gi
+    limits.cpu: 3000m
+    limits.memory: 4Gi
+

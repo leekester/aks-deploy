@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: billing
+  namespace: billing-ns
+spec:
+  containers:
+#  - image: acrdevakshislmgtuksouth001abfimd.azurecr.io/testimages/nginx:latest
+  - image: memcached
+    name: billing
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "50m"
+      limits:
+        memory: "128Mi"
+        cpu: "200m"
