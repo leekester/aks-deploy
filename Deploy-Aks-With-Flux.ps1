@@ -69,29 +69,30 @@ If ($installFlux) {
     az k8s-configuration flux create `
       --cluster-name $clusterName `
       --resource-group $resourceGroup `
-      --name app-config `
-      --namespace application `
+      --name billing-config `
+      --namespace billing-ns `
       --cluster-type managedClusters `
       --scope namespace `
       --url https://github.com/leekester/aks-deploy `
       --branch master `
       --sync-interval 0h1m0s `
       --timeout 0h1m0s `
-      --kustomization name=app-kustomization path=fluxconfigurations/applications/billing prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+      --kustomization name=billing-kustomization path=fluxconfigurations/applications/billing prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 
     # Policy application configuration
     az k8s-configuration flux create `
       --cluster-name $clusterName `
       --resource-group $resourceGroup `
-      --name app-config `
-      --namespace application `
+      --name policy-config `
+      --namespace policy-ns `
       --cluster-type managedClusters `
       --scope namespace `
       --url https://github.com/leekester/aks-deploy `
       --branch master `
       --sync-interval 0h1m0s `
       --timeout 0h1m0s `
-      --kustomization name=app-kustomization path=fluxconfigurations/applications/policy prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+      --kustomization name=policy-kustomization path=fluxconfigurations/applications/policy prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+
 }
 
 # Retrieve AKS admin credentials
