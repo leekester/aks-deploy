@@ -63,7 +63,7 @@ If ($installFlux) {
       --branch main `
       --sync-interval 0h1m0s `
       --timeout 0h1m0s `
-      --kustomization name=cluster-kustomization path=.\fluxconfigurations\cluster prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+      --kustomization name=cluster-kustomization path=/fluxconfigurations/cluster prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 
     # Billing application configuration
     az k8s-configuration flux create `
@@ -77,7 +77,7 @@ If ($installFlux) {
       --branch main `
       --sync-interval 0h1m0s `
       --timeout 0h1m0s `
-      --kustomization name=app-kustomization path=.\fluxconfigurations\billing prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+      --kustomization name=app-kustomization path=/fluxconfigurations/billing prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 
     # Policy application configuration
     az k8s-configuration flux create `
@@ -91,7 +91,7 @@ If ($installFlux) {
       --branch main `
       --sync-interval 0h1m0s `
       --timeout 0h1m0s `
-      --kustomization name=app-kustomization path=.\fluxconfigurations\policy prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+      --kustomization name=app-kustomization path=/fluxconfigurations/policy prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 }
 
 # Retrieve AKS admin credentials
