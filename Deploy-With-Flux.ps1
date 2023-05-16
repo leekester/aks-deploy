@@ -49,13 +49,7 @@ If ($installIstio) {
 If ($installFlux) {
     Write-Host "Enabling Flux extension..." -ForegroundColor Yellow
     az k8s-extension create --resource-group $resourceGroup --cluster-name $clusterName --cluster-type managedClusters --name flux --extension-type microsoft.flux --config useKubeletIdentity=true
-}
-
-# Retrieve AKS admin credentials
-Write-Host "Retrieving AKS credentials" -ForegroundColor Yellow
-az aks get-credentials --name $clusterName --resource-group $resourceGroup --overwrite-existing
-
-If ($installFlux) {
+    
     # Create Flux configurations and Kustomizations
     # Example cluster configuration
     az k8s-configuration flux create `
@@ -85,3 +79,7 @@ If ($installFlux) {
       --timeout 0h1m0s `
       --kustomization name=app-kustomization path=application prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 }
+
+# Retrieve AKS admin credentials
+Write-Host "Retrieving AKS credentials" -ForegroundColor Yellow
+az aks get-credentials --name $clusterName --resource-group $resourceGroup --overwrite-existing
