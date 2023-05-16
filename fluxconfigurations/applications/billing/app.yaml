@@ -5,8 +5,8 @@ metadata:
   namespace: billing-ns
 spec:
   containers:
-#  - image: acrdevakshislmgtuksouth001abfimd.azurecr.io/testimages/nginx:latest
-  - image: memcached
+  - image: acrdevakshislmgtuksouth001abfimd.azurecr.io/testimages/nginx:latest
+#  - image: memcached
     name: billing
     resources:
       requests:
