@@ -4,6 +4,7 @@ $clusterName = "aks"
 $nodesize = "Standard_B4ms"
 $nodeCount = "1"
 $installFlux = $true
+$installIstio = $true
 $subscriptionId = (az account show --query id --output tsv)
 
 # Create AKS cluster
@@ -40,8 +41,10 @@ Do {
 Write-Host "Registering/re-registering the Microsoft.ContainerService provider" -ForegroundColor Yellow
 az provider register --namespace Microsoft.ContainerService
 
-Write-Host "Enabling service mesh..." -ForegroundColor Yellow
-az aks mesh enable --resource-group $resourceGroup --name $clusterName
+If ($installIstio) {
+    Write-Host "Enabling Istio service mesh..." -ForegroundColor Yellow
+    az aks mesh enable --resource-group $resourceGroup --name $clusterName
+}
 
 If ($installFlux) {
     Write-Host "Enabling Flux extension..." -ForegroundColor Yellow
@@ -52,31 +55,33 @@ If ($installFlux) {
 Write-Host "Retrieving AKS credentials" -ForegroundColor Yellow
 az aks get-credentials --name $clusterName --resource-group $resourceGroup --overwrite-existing
 
-# Create Flux configurations and Kustomizations
-# Example cluster configuration
-az k8s-configuration flux create `
-  --cluster-name $clusterName `
-  --resource-group $resourceGroup `
-  --name cluster-config `
-  --namespace cluster-config `
-  --cluster-type managedClusters `
-  --scope cluster `
-  --url https://github.com/leekester/billing `
-  --branch main `
-  --sync-interval 0h1m0s `
-  --timeout 0h1m0s `
-  --kustomization name=cluster-kustomization path=cluster prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+If ($installFlux) {
+    # Create Flux configurations and Kustomizations
+    # Example cluster configuration
+    az k8s-configuration flux create `
+      --cluster-name $clusterName `
+      --resource-group $resourceGroup `
+      --name cluster-config `
+      --namespace cluster-config `
+      --cluster-type managedClusters `
+      --scope cluster `
+      --url https://github.com/leekester/billing `
+      --branch main `
+      --sync-interval 0h1m0s `
+      --timeout 0h1m0s `
+      --kustomization name=cluster-kustomization path=cluster prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
 
-# Example application configuration
-az k8s-configuration flux create `
-  --cluster-name $clusterName `
-  --resource-group $resourceGroup `
-  --name app-config `
-  --namespace application `
-  --cluster-type managedClusters `
-  --scope namespace `
-  --url https://github.com/leekester/billing `
-  --branch main `
-  --sync-interval 0h1m0s `
-  --timeout 0h1m0s `
-  --kustomization name=app-kustomization path=application prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+    # Example application configuration
+    az k8s-configuration flux create `
+      --cluster-name $clusterName `
+      --resource-group $resourceGroup `
+      --name app-config `
+      --namespace application `
+      --cluster-type managedClusters `
+      --scope namespace `
+      --url https://github.com/leekester/billing `
+      --branch main `
+      --sync-interval 0h1m0s `
+      --timeout 0h1m0s `
+      --kustomization name=app-kustomization path=application prune=true sync_interval=0h1m0s timeout=0h1m0s retry_interval=0h0m30s
+}
